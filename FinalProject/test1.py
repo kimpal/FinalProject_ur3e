@@ -36,6 +36,9 @@ pickConveyorA = 0, 0.3, 0.15, 0, 3.14, 0
 pickVia = 0.3, -0.25, 0.15, 0, 3.14, 0
 placeVia = 0.3, -0.25, 0.15, 0, 3.14, 0
 picObject = 0.02, -0.400, 0.006, 0, 3.14, 0
+rob2PickConveyorA = -0.38, 0.3, 0.001, 2.24, 2.2,
+rob2OverpicConveyorA = -0.38, 0.3, 0.009, 2.24, 2.2,
+rob2OverPickPosTable = 0.02, -0.400, 0.1, 0.0, 3.14, 0.0
 
 
 # function for moving robot using moveJ
@@ -68,6 +71,7 @@ def locateObjects():
 '''
 
 # Moves robot to coordinates set by camera
+#function for rob1
 def pickObject():
     global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
     objectCount += 1
@@ -99,6 +103,7 @@ def pickObject():
 
 
 # Need to fix this function for the robot 2
+# this is just a test function to figure out the cordiant and that
 def pickObjectRob2():
     global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
     objectCount += 1
@@ -131,6 +136,7 @@ def pickObjectRob2():
     #time.sleep(0.2)
     #move(rob2, via, True
 
+# function to pic object form the conveyer on rob1
 def pickobjectOnconveryerRob1():
     global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
     objectCount += 1
@@ -143,27 +149,26 @@ def pickobjectOnconveryerRob1():
     time.sleep(0.9)
     move(rob, pickVia, True)
 
-
+# function to pic object on conveyer from rob2
 def pickobjecOnConveyerRob2():
-    global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
+    global x, y, lastx, lasty, objectCount, placeObject, pickVia, rob2OverpicConveyorA ,rob2OverPickPosTable
     objectCount += 1
     lastx = x
     lasty = y
-    pickConveyorA2 = -0.38, 0.3, 0.001, 2.24, 2.2,
-    overpicConveyorA2 = -0.38, 0.3, 0.009, 2.24, 2.2,
-    overPickPosTable = 0.02, -0.400, 0.1, 0.0, 3.14, 0.0
     rob2.send_program(rq_open())
     time.sleep(0.1)
-    move(rob2, pickConveyorA2, True)
+    move(rob2, rob2PickConveyorA, True)
     time.sleep(0.9)
     rob2.send_program(rq_close())
     time.sleep(0.9)
-    #move(rob2, overpicConveyorA2, True)
-    move(rob2, overPickPosTable, True)
+    move(rob2, rob2OverpicConveyorA, True)
+    time.sleep(0.1)
+    #Nead to add an via postion as for rob 1
+    move(rob2, rob2OverPickPosTable, True) # position over the table
 
 
 
-
+#Conveyour is the code that controlls te conveyer belt
 def startConveyor():
     #start coveyor
     rob2.set_digital_out(5, 1)
@@ -219,7 +224,7 @@ move(rob, clearCamera, True)
 
 
 move(rob, clearCamera, True)
-
+#Setting the speed for the conveyer blt
 setConveyorSpeed(0.400)
 
 while objectCount < 1:

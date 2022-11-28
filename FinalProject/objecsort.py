@@ -2,7 +2,7 @@ import urx
 from Gripper import *
 import urllib.request
 import time
-
+# only Pseudokode code not working example
 # some code that use the camera to sort object
 
 plasePoss1 = False
