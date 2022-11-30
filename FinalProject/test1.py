@@ -7,9 +7,10 @@ import time
 
 picObjectFhinis = False
 
-# set robot ip adress
+# set robot ip address
 # this is the left robot
 r1 = "10.1.1.6"
+# this is the right robot
 r2 = "10.1.1.5"
 
 # connects to robot
@@ -32,12 +33,13 @@ clearCamera = 0.25, -0.22, 0.20, 0, 3.14, 0
 # placeObject = 0.3, -0.25, 0.15, 0, 3.14, 0
 placeObject = 0.3, -0.25, 0.006, 0, 3.14, 0  # coordinate to please the block carefully
 placeConveyorA = 0.2, 0.3, 0.005, 2.24, 2.2, 0
+overpickPlaceConveyorA = 0.2, 0.3, 0.1, 2.24, 2.2, 0
 pickConveyorA = 0, 0.3, 0.15, 0, 3.14, 0
 pickVia = 0.3, -0.25, 0.15, 0, 3.14, 0
 placeVia = 0.3, -0.25, 0.15, 0, 3.14, 0
 picObject = 0.02, -0.400, 0.006, 0, 3.14, 0
 rob2PickConveyorA = -0.38, 0.3, 0.001, 2.24, 2.2,
-rob2OverpicConveyorA = -0.38, 0.3, 0.009, 2.24, 2.2,
+rob2OverpicConveyorA = -0.38, 0.3, 0.1, 2.24, 2.2,
 rob2OverPickPosTable = 0.02, -0.400, 0.1, 0.0, 3.14, 0.0
 
 
@@ -112,9 +114,10 @@ def pickObjectRob2():
     # positions x, y, z, rx, ry, rz
     #starther = -0.2, -0.3, 0.1, 0.0, 3.14, 0.0  # need to figure out the position
     #overPickPos = -0.4, -0.5, 0.1, 0.0, 3.14, 0.0  # Need to figure out the positions
-    overPickPos = 0.02, -0.400, 0.1, 0.0, 3.14, 0.0
+    overPickPos = 0.02, -0.400, 0.2, 0.0, 3.14, 0.0
     picObject = 0.02, -0.400, 0.006, 0, 3.14, 0
     pickConveyorA2 = -0.38, 0.3, 0.005, 2.24, 2.2, 0
+    overplaceConveyorA2 = -0.38, 0.3, 0.1, 2.24, 2.2, 0
     placeConveyorA2 = -0.38, 0.3, 0.005, 2.24, 2.2, 0
     move(rob2, overPickPos, True)
     rob2.send_program(rq_open())
@@ -125,10 +128,13 @@ def pickObjectRob2():
     # sleep to allow gripper to close fully before program resumes
     time.sleep(0.6)
     move(rob2, overPickPos, True)
+    move(rob2, overplaceConveyorA2, True)
+    time.sleep(0.1)
     move(rob2, placeConveyorA2, True)
     rob2.send_program(rq_open())
     time.sleep(0.6)
     rob2.send_program(rq_close())
+    move(rob2, overplaceConveyorA2, True)
 
     #move(rob2, via, True)
     #move(rob, placeObjectAtTable, True)
@@ -136,27 +142,74 @@ def pickObjectRob2():
     #time.sleep(0.2)
     #move(rob2, via, True
 
-# function to pic object form the conveyer on rob1
-def pickobjectOnconveryerRob1():
+# pick object on table 1 rob
+def pickObjectFromTableRob1():
     global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
     objectCount += 1
     lastx = x
     lasty = y
+    # overPickPos = x, y, 0.1, 0.0, 3.14, 0.0
+    #overPickPos = x, y, 0.1, 0.0, 3.14, 0.0
+    overPickPos = 0.02, -0.400, 0.1, 0.0, 3.14, 0.0
+    #picObject = x, y, 0.006, 0, 3.14, 0
+    # pickPos = x, y, 0.005, 0.0, 3.14, 0.0
+    rob.send_program(rq_open())
+    time.sleep(0.1)
+    move(rob, overPickPos, True)
+    move(rob, picObject, True)
+    # closes gripper
+    rob.send_program(rq_close())
+    # sleep to allow gripper to close fully before program resumes
+    time.sleep(0.6)
+    move(rob, overPickPos, True)
+
+
+# function to pic object form the conveyer on rob1
+def pickobjectOnconveryerRob1():
+    global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA, overpickPlaceConveyorA
+    objectCount += 1
+    lastx = x
+    lasty = y
+    move(rob, overpickPlaceConveyorA, True)
     move(rob, placeConveyorA, True)
     rob.send_program(rq_open())
     time.sleep(0.9)
     rob.send_program(rq_close())
     time.sleep(0.9)
+    move(rob, overpickPlaceConveyorA, True)
     move(rob, pickVia, True)
+
+# pick object on table 2 rob2
+def picObjecFromTableRob2():
+    global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
+    objectCount += 1
+    lastx = x
+    lasty = y
+    #overPickPos = X, y, 0.1, 0.0, 3.14, 0.0
+    #picObject = X, y, 0.006, 0, 3.14, 0
+    overPickPos = 0.02, -0.400, 0.1, 0.0, 3.14, 0.0
+    picObject = 0.02, -0.400, 0.006, 0, 3.14, 0
+    move(rob2, overPickPos, True)
+    rob2.send_program(rq_open())
+    time.sleep(0.1)
+    move(rob2, picObject, True)
+    # closes gripper
+    rob2.send_program(rq_close())
+    # sleep to allow gripper to close fully before program resumes
+    time.sleep(0.6)
+    move(rob2, overPickPos, True)
+
+
 
 # function to pic object on conveyer from rob2
 def pickobjecOnConveyerRob2():
-    global x, y, lastx, lasty, objectCount, placeObject, pickVia, rob2OverpicConveyorA ,rob2OverPickPosTable
+    global x, y, lastx, lasty, objectCount, placeObject, pickVia, rob2OverpicConveyorA, rob2OverPickPosTable
     objectCount += 1
     lastx = x
     lasty = y
     rob2.send_program(rq_open())
     time.sleep(0.1)
+    move(rob2, rob2OverpicConveyorA, True)
     move(rob2, rob2PickConveyorA, True)
     time.sleep(0.9)
     rob2.send_program(rq_close())
@@ -203,21 +256,26 @@ def setConveyorSpeed(voltage):
     #sets analog out 1 to desired voltage. 0.012 is the slowest speed.
     rob2.set_analog_out(1, voltage)
 
-
-
-
 # activates gripper. only needed once per power cycle
 rob.send_program(rq_activate())
 time.sleep(2.5)
+rob2.send_program(rq_activate())
+time.sleep(2.5)
 # sets speed of gripper to max
 rob.send_program(rq_set_speed(250))
-rob2.send_program(rq_set_speed(250))
 time.sleep(0.1)
 # sets force of gripper to a low value
 rob.send_program(rq_set_force(10))
 time.sleep(0.1)
+# sets speed of gripper to max
+rob2.send_program(rq_set_speed(250))
+time.sleep(0.1)
+# sets force of gripper to a low value
+rob2.send_program(rq_set_force(10))
+time.sleep(0.1)
 # sets robot tcp, the distance from robot flange to gripper tips.
 rob.set_tcp((0, 0, 0.16, 0, 0, 0))
+rob2.set_tcp((0, 0, 0.16, 0, 0, 0))
 
 move(rob, clearCamera, True)
 
@@ -235,8 +293,8 @@ while objectCount < 1:
         time.sleep(4.0)  # this tim is perfect with the speed to get the object in good position for pic form rob2
         stopConveyor()
         #pickobjecOnConveyerRob2()
-        #pickObjectRob2()
-        pickobjecOnConveyerRob2()
+        pickObjectRob2()
+        #pickobjecOnConveyerRob2()
 
 
     #move(rob, clearCamera, True)
