@@ -31,15 +31,17 @@ objectCount = 0
 # positions x, y, z, rx, ry, rz
 clearCamera = 0.25, -0.22, 0.20, 0, 3.14, 0
 # placeObject = 0.3, -0.25, 0.15, 0, 3.14, 0
-placeObject = 0.3, -0.25, 0.006, 0, 3.14, 0  # coordinate to please the block carefully
+placeObject = 0.3, -0.25, 0.004, 0, 3.14, 0  # coordinate to please the block carefully table 1
 placeConveyorA = 0.2, 0.3, 0.005, 2.24, 2.2, 0
+#placeConveyorA = 0.2, 0.3, 0.005, 2.24, 2.2, 0
 overpickPlaceConveyorA = 0.2, 0.3, 0.1, 2.24, 2.2, 0
 pickConveyorA = 0, 0.3, 0.15, 0, 3.14, 0
 pickVia = 0.3, -0.25, 0.15, 0, 3.14, 0
 placeVia = 0.3, -0.25, 0.15, 0, 3.14, 0
 picObject = 0.02, -0.400, 0.006, 0, 3.14, 0
-rob2PickConveyorA = -0.38, 0.3, 0.001, 2.24, 2.2,
-rob2OverpicConveyorA = -0.38, 0.3, 0.1, 2.24, 2.2,
+placeObjectTabel2 = 0.02, -0.400, 0.05, 0, 3.14, 0
+rob2PickConveyorA = -0.38, 0.3, 0.001, 2.24, 2.2, 0
+rob2OverpicConveyorA = -0.38, 0.3, 0.1, 2.24, 2.2, 0
 rob2OverPickPosTable = 0.02, -0.400, 0.1, 0.0, 3.14, 0.0
 
 
@@ -170,16 +172,30 @@ def pickobjectOnconveryerRob1():
     objectCount += 1
     lastx = x
     lasty = y
-    move(rob, overpickPlaceConveyorA, True)
-    move(rob, placeConveyorA, True)
     rob.send_program(rq_open())
+    time.sleep(0.2)
+    move(rob, overpickPlaceConveyorA, True)
+    move(rob, placeConveyorA, True)# nead to fix
     time.sleep(0.9)
     rob.send_program(rq_close())
     time.sleep(0.9)
     move(rob, overpickPlaceConveyorA, True)
     move(rob, pickVia, True)
 
-# pick object on table 2 rob2
+def placeObjeconTableRob1():
+    global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
+    objectCount += 1
+    lastx = x
+    lasty = y
+    overPickPos = 0.02, -0.400, 0.1, 0.0, 3.14, 0.0
+    #move(rob, overPickPos, True)
+    move(rob, placeObject, True)
+    rob.send_program(rq_open())
+    time.sleep(0.5)
+    #move(rob, overPickPos, True)
+
+
+# pick object on table 2 rob2 # Working
 def picObjecFromTableRob2():
     global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
     objectCount += 1
@@ -199,11 +215,37 @@ def picObjecFromTableRob2():
     time.sleep(0.6)
     move(rob2, overPickPos, True)
 
+def placeObjectOntablRob2():
+    global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
+    objectCount += 1
+    lastx = x
+    lasty = y
+    #overPickPos = X, y, 0.1, 0.0, 3.14, 0.0
+    #picObject = X, y, 0.006, 0, 3.14, 0
+    overPickPos = 0.02, -0.400, 0.1, 0.0, 3.14, 0.0
+    picObject = 0.02, -0.400, 0.006, 0, 3.14, 0
+    time.sleep(0.1)
+    move(rob2, picObject, True)
+    rob2.send_program(rq_open())
+
+ # comand to place object on conveyer ned to be runned after the pic comand form the table
+def placeObjectOnConveyerRob2():
+    global x, y, lastx, lasty, objectCount, placeObject, pickVia, rob2OverpicConveyorA, rob2OverPickPosTable, rob2PickConveyorA, picObject, placeObjectTabel2
+    objectCount += 1
+    lastx = x
+    lasty = y
+    move(rob2, rob2OverpicConveyorA, True)
+    move(rob2, rob2PickConveyorA, True)
+    time.sleep(0.1)
+    rob2.send_program(rq_open())
+    time.sleep(0.9)
+    move(rob2, rob2OverpicConveyorA, True)
+
 
 
 # function to pic object on conveyer from rob2
 def pickobjecOnConveyerRob2():
-    global x, y, lastx, lasty, objectCount, placeObject, pickVia, rob2OverpicConveyorA, rob2OverPickPosTable
+    global x, y, lastx, lasty, objectCount, placeObject, pickVia, rob2OverpicConveyorA, rob2OverPickPosTable, rob2PickConveyorA, picObject, placeObjectTabel2
     objectCount += 1
     lastx = x
     lasty = y
@@ -218,6 +260,8 @@ def pickobjecOnConveyerRob2():
     time.sleep(0.1)
     #Nead to add an via postion as for rob 1
     move(rob2, rob2OverPickPosTable, True) # position over the table
+    move(rob2, placeObjectTabel2, True)
+    rob2.send_program(rq_open())
 
 
 
@@ -288,13 +332,26 @@ setConveyorSpeed(0.400)
 while objectCount < 1:
     #locateObjects()
     #if (x != lastx or y != lasty) and (x != 0.025 or y != -0.385):
-        pickObject()
-        startConveyor()
-        time.sleep(4.0)  # this tim is perfect with the speed to get the object in good position for pic form rob2
+        #pickObject()
+        #reverseConveyor()
+        #startConveyor()
+        #time.sleep(3.6)  # this tim is perfect with the speed to get the object in good position for pic form rob2
+        #stopConveyor()
+        #pickobjecOnConveyerRob2()
+        #pickObjectRob2()
+        #picObjecFromTableRob2()
+        #pickobjecOnConveyerRob2()
+        #pickobjectOnconveryerRob1()
+
+        # this part of the code pic object form table 2 and places it on the conveyer
+        # Then rob 1 pics it up and sets int at the table
+        picObjecFromTableRob2()
+        placeObjectOnConveyerRob2()
+        reverseConveyor()
+        time.sleep(3.6)  # this tim is perfect with the speed to get the object in good position for pic form rob2
         stopConveyor()
-        #pickobjecOnConveyerRob2()
-        pickObjectRob2()
-        #pickobjecOnConveyerRob2()
+        pickobjectOnconveryerRob1()
+        placeObjeconTableRob1()
 
 
     #move(rob, clearCamera, True)
