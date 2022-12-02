@@ -1,9 +1,8 @@
 import urx
+from threading import Thread
 from Gripper import *
 import urllib.request
 import time
-
-
 
 picObjectFhinis = False
 
@@ -33,7 +32,6 @@ clearCamera = 0.25, -0.22, 0.20, 0, 3.14, 0
 # placeObject = 0.3, -0.25, 0.15, 0, 3.14, 0
 placeObject = 0.3, -0.25, 0.004, 0, 3.14, 0  # coordinate to please the block carefully table 1
 placeConveyorA = 0.2, 0.3, 0.005, 2.24, 2.2, 0
-#placeConveyorA = 0.2, 0.3, 0.005, 2.24, 2.2, 0
 overpickPlaceConveyorA = 0.2, 0.3, 0.1, 2.24, 2.2, 0
 pickConveyorA = 0, 0.3, 0.15, 0, 3.14, 0
 pickVia = 0.3, -0.25, 0.15, 0, 3.14, 0
@@ -74,8 +72,9 @@ def locateObjects():
         print(x, y)
 '''
 
+
 # pick object on table 1 rob1
-def pickObjectFromTableRob1():
+def pick_object_from_table_rob1():
     global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
     objectCount += 1
     lastx = x
@@ -94,7 +93,8 @@ def pickObjectFromTableRob1():
     time.sleep(0.6)
     move(rob, overPickPos, True)
 
-def placeObjectOnConveyerRob1():
+
+def place_object_on_conveyer_rob1():
     global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
     objectCount += 1
     lastx = x
@@ -107,7 +107,7 @@ def placeObjectOnConveyerRob1():
 
 
 # function to pic object form the conveyer on rob1
-def pickObjectOnConveyerRob1():
+def pick_object_on_conveyer_rob1():
     global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA, overpickPlaceConveyorA
     objectCount += 1
     lastx = x
@@ -122,7 +122,8 @@ def pickObjectOnConveyerRob1():
     move(rob, overpickPlaceConveyorA, True)
     move(rob, pickVia, True)
 
-def placeObjectOnTableRob1():
+
+def place_object_on_table_rob1():
     global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
     objectCount += 1
     lastx = x
@@ -136,7 +137,7 @@ def placeObjectOnTableRob1():
 
 
 # pick object on table 2 rob2 # Working
-def pickObjectFromTableRob2():
+def pick_object_from_table_rob2():
     global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
     objectCount += 1
     lastx = x
@@ -155,7 +156,8 @@ def pickObjectFromTableRob2():
     time.sleep(0.6)
     move(rob2, overPickPos, True)
 
-def placeObjectOnTablRob2():
+
+def place_object_on_tabl_rob2():
     global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
     objectCount += 1
     lastx = x
@@ -171,8 +173,9 @@ def placeObjectOnTablRob2():
     move(rob2, placeObjectTabel2, True)
     rob2.send_program(rq_open())
 
- # comand to place object on conveyer ned to be runned after the pic comand form the table
-def placeObjectOnConveyerRob2():
+
+# command to place object on conveyer need to be run after the pic command form the table
+def place_object_on_conveyer_rob2():
     global x, y, lastx, lasty, objectCount, placeObject, pickVia, rob2OverpicConveyorA, rob2OverPickPosTable, rob2PickConveyorA, picObject, placeObjectTabel2
     objectCount += 1
     lastx = x
@@ -185,9 +188,8 @@ def placeObjectOnConveyerRob2():
     move(rob2, rob2OverpicConveyorA, True)
 
 
-
 # function to pic object on conveyer from rob2
-def pickObjectOnConveyerRob2():
+def pick_object_on_conveyer_rob2():
     global x, y, lastx, lasty, objectCount, placeObject, pickVia, rob2OverpicConveyorA, rob2OverPickPosTable, rob2PickConveyorA, picObject, placeObjectTabel2
     objectCount += 1
     lastx = x
@@ -201,47 +203,57 @@ def pickObjectOnConveyerRob2():
     time.sleep(0.9)
     move(rob2, rob2OverpicConveyorA, True)
     time.sleep(0.1)
-    #Nead to add an via postion as for rob 1
-    #move(rob2, rob2OverPickPosTable, True) # position over the table
-    #move(rob2, placeObjectTabel2, True)
-    #rob2.send_program(rq_open())
-
+    # Need to add and via position as for rob 1
+    # move(rob2, rob2OverPickPosTable, True) # position over the table
+    # move(rob2, placeObjectTabel2, True)
+    # rob2.send_program(rq_open())
 
 
 #Conveyour is the code that controlls te conveyer belt
-def startConveyor():
-    #start coveyor
+def start_conveyor():
+    # start coveyor
     rob2.set_digital_out(5, 1)
-    #allow digital out 5 to stay active for 0.1s
+    # allow digital out 5 to stay active for 0.1s
     time.sleep(0.1)
-    #set digital out back to 0
+    # set digital out back to 0
     rob2.set_digital_out(5, 0)
-    #conveyor started
+    # conveyor started
 
-def stopConveyor():
-    #stop conveyor
+
+def stop_conveyor():
+    # stop conveyor
     rob2.set_digital_out(7, 1)
-    #allow digital out 7 to stay active for 0.1s
+    # allow digital out 7 to stay active for 0.1s
     time.sleep(0.1)
-    #set digital out back to 0
+    # set digital out back to 0
     rob2.set_digital_out(7, 0)
-    #conveyor stopped
+    # conveyor stopped
 
-def reverseConveyor():
-    #start coveyor in reverse direction
+
+def reverse_conveyor():
+    # start coveyor in reverse direction
     rob2.set_digital_out(6, 1)
-    #allow digital out 6 to stay active for 0.1s
+    # allow digital out 6 to stay active for 0.1s
     time.sleep(0.1)
-    #set digital out back to 0
+    # set digital out back to 0
     rob2.set_digital_out(6, 0)
-    #conveyor started in reverse direction
+    # conveyor started in reverse direction
 
 
-def setConveyorSpeed(voltage):
-    #sets analog out to voltage instead of current
+def set_conveyor_speed(voltage):
+    # sets analog out to voltage instead of current
     rob2.send_program("set_analog_outputdomain(1, 1)")
-    #sets analog out 1 to desired voltage. 0.012 is the slowest speed.
+    # sets analog out 1 to desired voltage. 0.012 is the slowest speed.
     rob2.set_analog_out(1, voltage)
+
+
+def program_complete():
+    #stop_threads = True
+    rob.close()
+    rob2.close()
+    print("program complete")
+    #sys.exit()
+
 
 # activates gripper. only needed once per power cycle
 rob.send_program(rq_activate())
@@ -268,7 +280,7 @@ rob2.set_tcp((0, 0, 0.16, 0, 0, 0))
 move(rob2, clearCamera, True)
 move(rob, clearCamera, True)
 #Setting the speed for the conveyer belt
-setConveyorSpeed(0.400)
+set_conveyor_speed(0.400)
 
 while objectCount < 1:
     #locateObjects()
@@ -277,25 +289,25 @@ while objectCount < 1:
 
         # portion of the code to pic object form table 1 and place it on the conveyer
         # and start it and pic the objct vit rob2
-        #pickObjectFromTableRob1()
-        #placeObjectOnConveyerRob1()
-        #startConveyor()
+        #pick_object_from_table_rob1()
+        #place_object_on_conveyer_rob1()
+        #start_conveyor()
         #time.sleep(3.6)  # this tim is perfect with the speed to get the object in good position for pic form rob2
-        #stopConveyor()
-        #pickObjectOnConveyerRob2()
-        #placeObjectTabel2
+        #stop_conveyor()
+        #pick_object_on_conveyer_rob2()
+        #place_object_on_tabl_rob2()
 
 
         # This part of the code pic object form table 2 and places it on the conveyer
         # Then rob 1 pics it up and sets int at the table
-        pickObjectFromTableRob2()
-        placeObjectOnConveyerRob2()
-        reverseConveyor()
+        pick_object_from_table_rob2()
+        place_object_on_conveyer_rob2()
+        reverse_conveyor()
         time.sleep(3.6)  # this tim is perfect with the speed to get the object in good position for pic form rob2
-        stopConveyor()
-        pickObjectOnConveyerRob1()
-        pickObjectOnConveyerRob1()
-        placeObjectOnTableRob1()
+        stop_conveyor()
+        pick_object_on_conveyer_rob1()
+        pick_object_on_conveyer_rob1()
+        place_object_on_table_rob1()
 
 
     #move(rob, clearCamera, True)
@@ -305,5 +317,6 @@ while objectCount < 1:
 #    if x != lastx or y != lasty:
 #        pickObject()
 
-rob.close()
-rob2.close()
+#rob.close()
+#rob2.close()
+program_complete()
