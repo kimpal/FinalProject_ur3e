@@ -80,28 +80,6 @@ def locate_objects_rob():
         time.sleep(3)
         print(x, y)
 
-
-'''
-def locate_objects_rob2():
-    global x, y, objectLocated, switchCounter
-    page = urllib.request.urlopen('http://10.1.1.7/CmdChannel?TRIG')
-    time.sleep(2)
-    page = urllib.request.urlopen('http://10.1.1.7/CmdChannel?gRES')
-    # reads output from camera
-    coords = page.read().decode('utf-8')
-    # splits output
-    x1 = coords.split(",")
-    objectLocated = int(x1[2])
-    if objectLocated == 1:
-        switchCounter = 0
-        y = x1[4]
-        x = x1[3]
-        x = (float(x) + 40) / 1000  # x = (float(x) + 25) /1000
-        y = (float(y) - 385) / 1000  # y = (float(y) - 385) /1000  # 363
-        time.sleep(3)
-        print(x, y)
-'''
-
 # pick object on table 1 rob1
 def pick_object_from_table_rob1():
     global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
@@ -186,91 +164,6 @@ def place_object_on_table_rob1():
     #move(rob, overPickPos, True)
 
 
-# pick object on table 2 rob2 # Working
-def pick_object_from_table_rob2():
-    global x, y, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA, clearCamera
-    objectCount += 1
-    lastx = x
-    lasty = y
-    #overPickPos = X, y, 0.1, 0.0, 3.14, 0.0
-    #picObject = X, y, 0.006, 0, 3.14, 0
-    overPickPos = x, y, 0.1, 0.0, 3.14, 0.0
-    picObject = x, y, 0.006, 0, 3.14, 0
-    #overPickPos = 0.02, -0.400, 0.1, 0.0, 3.14, 0.0
-    #picObject = 0.02, -0.400, 0.006, 0, 3.14, 0
-    rob2.send_program(rq_open())
-    time.sleep(0.1)
-    move(rob2, overPickPos, True)
-    move(rob2, picObject, True)
-    # closes gripper
-    rob2.send_program(rq_close())
-    # sleep to allow gripper to close fully before program resumes
-    time.sleep(0.6)
-    move(rob2, overPickPos, True)
-    move(rob2, clearCamera, True)
-
-
-def place_object_on_tabl_rob2():
-    global x, y, lastx, lasty, objectCount, table2PositionCount, placeObject, pickVia, placeConveyorA
-    #objectCount += 1
-    # Nead to figure out how to imcrease plase postion for each placing so next object get new pos
-    table2PositionCount += 10
-    yNew = 0.3 + table2PositionCount
-    #overPickPos = X, y, 0.1, 0.0, 3.14, 0.0
-    #picObject = X, y, 0.006, 0, 3.14, 0
-    #placeObjectTabel2 = 0.3, -0.400, 0.03, 0, 3.14, 0
-    #overPlaceObjectTabel2 = 0.3, -0.400, 0.1, 0, 3.14, 0
-    #overPickPos = 0.02, -0.400, 0.1, 0.0, 3.14, 0.0
-    #picObject = 0.02, -0.400, 0.006, 0, 3.14, 0
-    #time.sleep(0.1)
-    #move(rob2, picObject, True)
-    #rob2.send_program(rq_open())
-    #move(rob2, rob2OverPickPosTable, True)  # position over the table
-    move(rob2, overPlaceObjectTabel2, True)
-    move(rob2, placeObjectTabel2, True)
-    rob2.send_program(rq_open())
-    time.sleep(0.9)
-    move(rob2, overPlaceObjectTabel2, True)
-    move(rob2, clearCamera, True)
-
-
-# command to place object on conveyer need to be run after the pic command form the table
-def place_object_on_conveyer_rob2():
-    global x, y, lastx, lasty, objectCount, placeObject, pickVia, rob2OverpicConveyorA, rob2OverPickPosTable, rob2PickConveyorA, picObject, placeObjectTabel2
-    #objectCount += 1
-    lastx = x
-    lasty = y
-    move(rob2, rob2OverpicConveyorA, True)
-    move(rob2, rob2PickConveyorA, True)
-    time.sleep(0.1)
-    rob2.send_program(rq_open())
-    time.sleep(0.9)
-    move(rob2, rob2OverpicConveyorA, True)
-    move(rob2, clearCamera, True)
-
-
-# function to pic object on conveyer from rob2
-def pick_object_on_conveyer_rob2():
-    global x, y, lastx, lasty, objectCount, placeObject, pickVia, rob2OverpicConveyorA, rob2OverPickPosTable, rob2PickConveyorA, picObject, placeObjectTabel2
-    #objectCount += 1
-    lastx = x
-    lasty = y
-    rob2.send_program(rq_open())
-    time.sleep(0.1)
-    move(rob2, rob2OverpicConveyorA, True)
-    move(rob2, rob2PickConveyorA, True)
-    time.sleep(0.9)
-    rob2.send_program(rq_close())
-    time.sleep(0.9)
-    move(rob2, rob2OverpicConveyorA, True)
-    time.sleep(0.1)
-    move(rob2, clearCamera, True)
-    # Need to add and via position as for rob 1
-    # move(rob2, rob2OverPickPosTable, True) # position over the table
-    # move(rob2, placeObjectTabel2, True)
-    # rob2.send_program(rq_open())
-
-
 # Conveyor is the code that controls te conveyer belt
 def start_conveyor():
     # start coveyor
@@ -353,19 +246,6 @@ def move_detected_object_to_conveyor_rob1():
     stop_conveyor()
 
 
-def move_object_form_conveyer_rob2_to_tabel():
-    pick_object_on_conveyer_rob2()
-    place_object_on_tabl_rob2()
-
-
-def move_detected_object_to_conveyor_rob2():
-    pick_object_from_table_rob2()
-    place_object_on_conveyer_rob2()
-    reverse_conveyor()
-    time.sleep(3.6)
-    stop_conveyor()
-
-
 def move_object_form_conveyor_rob1_to_table():
     pick_object_on_conveyer_rob1()
     place_object_on_table_rob1()
@@ -397,16 +277,12 @@ def move_object_form_conveyor_rob1_to_table():
         #pick_object_on_conveyer_rob1()
         #place_object_on_table_rob1()
 
-
-# sorting cylinders form tabel 1 to conveyer
+# to be removed only their for testing
 while objectCount < 2:
     #locate_objects_rob2()
     #locate_objects_rob()
     if (x != lastx or y != lasty) and (x != 0.025 or y != -0.385):
-        # move_detected_object_to_conveyor_rob1()
-        # move_object_form_conveyer_rob2_to_tabel()
-        move_detected_object_to_conveyor_rob2()
-        move_object_form_conveyor_rob1_to_table()
+        move_detected_object_to_conveyor_rob1()
 #rob.close()
 #rob2.close()
 program_complete()
