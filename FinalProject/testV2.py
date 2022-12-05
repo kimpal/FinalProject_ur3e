@@ -59,7 +59,7 @@ def move(robot, location, moveWait):
     if moveWait == False:
         time.sleep(0.1)
 
-
+''''
 # Uses camera to locate objects
 def locate_objects_rob():
     global x, y, objectLocated, switchCounter
@@ -79,9 +79,9 @@ def locate_objects_rob():
         y = (float(y) - 350) / 1000  # y = (float(y) - 385) /1000  # 363
         time.sleep(3)
         print(x, y)
-
-
 '''
+
+
 def locate_objects_rob2():
     global x, y, objectLocated, switchCounter
     page = urllib.request.urlopen('http://10.1.1.7/CmdChannel?TRIG')
@@ -100,7 +100,7 @@ def locate_objects_rob2():
         y = (float(y) - 385) / 1000  # y = (float(y) - 385) /1000  # 363
         time.sleep(3)
         print(x, y)
-'''
+
 
 # pick object on table 1 rob1
 def pick_object_from_table_rob1():
@@ -177,12 +177,13 @@ def place_object_on_table_rob1():
     #lastx = x
     #lasty = y
     overPickPos = 0.02, -0.400, 0.1, 0.0, 3.14, 0.0
-    placeObject = 0.3+x2, -0.42+y2, 0.03, 0, 3.14, 0
+    placeObject = -0.26-x2, -0.46+y2, 0.03, 0, 3.14, 0
     #move(rob, overPickPos, True)
     move(rob, placeObject, True)
     rob.send_program(rq_open())
     time.sleep(0.5)
     print(x2, y2)
+    move(rob, clearCamera, True)
     #move(rob, overPickPos, True)
 
 
@@ -255,8 +256,10 @@ def pick_object_on_conveyer_rob2():
     #objectCount += 1
     lastx = x
     lasty = y
+    move(rob2, clearCamera, True)
     rob2.send_program(rq_open())
     time.sleep(0.1)
+    move(rob2, clearCamera, True)
     move(rob2, rob2OverpicConveyorA, True)
     move(rob2, rob2PickConveyorA, True)
     time.sleep(0.9)
@@ -399,12 +402,12 @@ def move_object_form_conveyor_rob1_to_table():
 
 
 # sorting cylinders form tabel 1 to conveyer
-while objectCount < 2:
-    #locate_objects_rob2()
+while objectCount < 4:
+    locate_objects_rob2()
     #locate_objects_rob()
     if (x != lastx or y != lasty) and (x != 0.025 or y != -0.385):
-        # move_detected_object_to_conveyor_rob1()
-        # move_object_form_conveyer_rob2_to_tabel()
+        #move_detected_object_to_conveyor_rob1()
+        #move_object_form_conveyer_rob2_to_tabel()
         move_detected_object_to_conveyor_rob2()
         move_object_form_conveyor_rob1_to_table()
 #rob.close()
