@@ -4,7 +4,6 @@ from Gripper import *
 import urllib.request
 import sys
 import time
-
 picObjectFhinis = False
 
 # set robot ip address
@@ -34,6 +33,8 @@ objectCount = 0
 table2PositionCount = 0
 x2 = 0
 y2 = 0
+x2i = 0
+x2i = 0
 
 # positions x, y, z, rx, ry, rz
 clearCamera = 0.25, -0.22, 0.20, 0, 3.14, 0
@@ -59,7 +60,7 @@ def move(robot, location, moveWait):
     if moveWait == False:
         time.sleep(0.1)
 
-''''
+
 # Uses camera to locate objects
 def locate_objects_rob():
     global x, y, objectLocated, switchCounter
@@ -79,9 +80,9 @@ def locate_objects_rob():
         y = (float(y) - 350) / 1000  # y = (float(y) - 385) /1000  # 363
         time.sleep(3)
         print(x, y)
-'''
 
 
+''''
 def locate_objects_rob2():
     global x, y, objectLocated, switchCounter
     page = urllib.request.urlopen('http://10.1.1.7/CmdChannel?TRIG')
@@ -100,7 +101,7 @@ def locate_objects_rob2():
         y = (float(y) - 385) / 1000  # y = (float(y) - 385) /1000  # 363
         time.sleep(3)
         print(x, y)
-
+'''
 
 # pick object on table 1 rob1
 def pick_object_from_table_rob1():
@@ -273,6 +274,56 @@ def pick_object_on_conveyer_rob2():
     # move(rob2, placeObjectTabel2, True)
     # rob2.send_program(rq_open())
 
+# Local sorting on table 1
+def sort_on_table1():
+    global x2, y2, x2i, y2i, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
+    #objectCount += 1
+    #x2 = 0
+    #y2 = 0
+    if(objectCount<4):
+        print("objectount1.", objectCount)
+        if(objectCount>1):
+            x2 = x2 + float(0.0)
+            y2 = y2 + float(0.09)
+        else:
+            pass
+        #lastx = x
+        #lasty = y
+        overPickPos = 0.02, -0.400, 0.08, 0.0, 3.14, 0.0
+        OvrPosplaceObject = -0.26-x2, -0.46+y2, 0.05, 0, 3.14, 0
+        placeObject = -0.26-x2, -0.46+y2, 0.03, 0, 3.14, 0
+        #move(rob, overPickPos, True)
+        move(rob, OvrPosplaceObject, True)
+        move(rob, placeObject, True)
+        rob.send_program(rq_open())
+        time.sleep(0.5)
+        print(x2, y2)
+        move(rob, clearCamera, True)
+        #move(rob, overPickPos, True)
+    else:
+        #x2 = -0.26
+        #y2 = -0.46
+        if(objectCount>=4):
+            x2i = x2i + float(0.0)  # Ned to give this variable a new indeviduale name in order to get it to work
+            y2i = y2i + float(0.09)  # Same as x2 give its oven independent name form the  if above example x2i and y2i
+        else:
+            pass
+        #lastx = x
+        #lasty = y
+        overPickPos = 0.02, -0.400, 0.1, 0.0, 3.14, 0.0
+        OverPosplaceObject = -0.26-x2i, -0.46+y2i, 0.07, 0, 3.14, 0
+        placeObject = -0.26-x2i, -0.46+y2i, 0.05, 0, 3.14, 0
+        #move(rob, overPickPos, True)
+        move(rob, OverPosplaceObject, True)
+        move(rob, placeObject, True)
+        rob.send_program(rq_open())
+        time.sleep(0.5)
+        print("cord it4", x2i, y2i)
+        print("Test 4 runs")
+        move(rob, clearCamera, True)
+        #move(rob, overPickPos, True)
+
+
 
 # Conveyor is the code that controls te conveyer belt
 def start_conveyor():
@@ -402,14 +453,15 @@ def move_object_form_conveyor_rob1_to_table():
 
 
 # sorting cylinders form tabel 1 to conveyer
-while objectCount < 4:
-    locate_objects_rob2()
-    #locate_objects_rob()
+while objectCount < 8:
+    #locate_objects_rob2()
+    locate_objects_rob()
     if (x != lastx or y != lasty) and (x != 0.025 or y != -0.385):
+        pick_object_from_table_rob1()
+        sort_on_table1()
         #move_detected_object_to_conveyor_rob1()
         #move_object_form_conveyer_rob2_to_tabel()
-        move_detected_object_to_conveyor_rob2()
-        move_object_form_conveyor_rob1_to_table()
+        #move_object_form_conveyor_rob1_to_table()
 #rob.close()
 #rob2.close()
 program_complete()
