@@ -34,7 +34,14 @@ table2PositionCount = 0
 x2 = 0
 y2 = 0
 x2i = 0
-x2i = 0
+y2i = 0
+
+# rob2 intitiating counter for object
+x3 = 0
+y3 = 0
+x3i = 0
+y3i = 0
+
 
 # positions x, y, z, rx, ry, rz
 clearCamera = 0.25, -0.22, 0.20, 0, 3.14, 0
@@ -235,6 +242,54 @@ def place_object_on_tabl_rob2():
     move(rob2, overPlaceObjectTabel2, True)
     move(rob2, clearCamera, True)
 
+def place_object_ontble2_incresed_yvalue():
+    global x3, y3, x3i, y3i, lastx, lasty, objectCount, placeObjectTabel2, pickVia, placeConveyorA
+    #objectCount += 1
+    #x2 = 0
+    #y2 = 0
+    if(objectCount<6):
+        print("objectount1.", objectCount)
+        if(objectCount>1):
+            x3 = x3 + float(0.0)
+            y3 = y3 + float(0.09)
+        else:
+            pass
+        #lastx = x
+        #lasty = y
+        placeObjectTabel2 = 0.3+x3, -0.400+y3, 0.03, 0, 3.14, 0
+        overPlaceObjectTabel2 = 0.3+x3, -0.400+y3, 0.1, 0, 3.14, 0
+        #move(rob, overPickPos, True)
+        move(rob2, overPlaceObjectTabel2, True)
+        move(rob2, placeObjectTabel2, True)
+        rob2.send_program(rq_open())
+        time.sleep(0.5)
+        print(x3, y3)
+        move(rob2, clearCamera, True)
+        #move(rob, overPickPos, True)
+    else:
+        #x2 = -0.26
+        #y2 = -0.46
+        if(objectCount>=6):
+            x3i = x3i + float(0.0)
+            y3i = y3i + float(0.09)
+            print("in second if else condition")
+        else:
+            pass
+        #lastx = x
+        #lasty = y
+        placeObjectTabel2 = 0.3+x3i, -0.400+y3i, 0.03, 0, 3.14, 0
+        overPlaceObjectTabel2 = 0.3+x3i, -0.400+y3i, 0.1, 0, 3.14, 0
+        #move(rob, overPickPos, True)
+        move(rob2, overPlaceObjectTabel2, True)
+        move(rob2, placeObjectTabel2, True)
+        rob2.send_program(rq_open())
+        time.sleep(0.5)
+        move(rob2, overPlaceObjectTabel2, True)
+        print("cord it4", x3i, y3i)
+        print("Test 4 runs")
+        move(rob2, clearCamera, True)
+        #move(rob, overPickPos, True)
+
 
 # command to place object on conveyer need to be run after the pic command form the table
 def place_object_on_conveyer_rob2():
@@ -274,13 +329,15 @@ def pick_object_on_conveyer_rob2():
     # move(rob2, placeObjectTabel2, True)
     # rob2.send_program(rq_open())
 
+
 # Local sorting on table 1
+# to doo Test this function if working refactoring it, and implement for rob 2
 def sort_on_table1():
     global x2, y2, x2i, y2i, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
     #objectCount += 1
     #x2 = 0
     #y2 = 0
-    if(objectCount<4):
+    if(objectCount<6):
         print("objectount1.", objectCount)
         if(objectCount>1):
             x2 = x2 + float(0.0)
@@ -303,21 +360,23 @@ def sort_on_table1():
     else:
         #x2 = -0.26
         #y2 = -0.46
-        if(objectCount>=4):
+        if(objectCount>=6):
             x2i = x2i + float(0.0)  # Ned to give this variable a new indeviduale name in order to get it to work
             y2i = y2i + float(0.09)  # Same as x2 give its oven independent name form the  if above example x2i and y2i
+            print("in second if else condition")
         else:
             pass
         #lastx = x
         #lasty = y
         overPickPos = 0.02, -0.400, 0.1, 0.0, 3.14, 0.0
-        OverPosplaceObject = -0.26-x2i, -0.46+y2i, 0.07, 0, 3.14, 0
-        placeObject = -0.26-x2i, -0.46+y2i, 0.05, 0, 3.14, 0
+        OverPosplaceObject = -0.26-x2i, -0.46+y2i, 0.09, 0, 3.14, 0
+        placeObject = -0.26-x2i, -0.46+y2i, 0.06, 0, 3.14, 0
         #move(rob, overPickPos, True)
         move(rob, OverPosplaceObject, True)
         move(rob, placeObject, True)
         rob.send_program(rq_open())
         time.sleep(0.5)
+        move(rob, OverPosplaceObject, True)
         print("cord it4", x2i, y2i)
         print("Test 4 runs")
         move(rob, clearCamera, True)
@@ -410,6 +469,8 @@ def move_detected_object_to_conveyor_rob1():
 def move_object_form_conveyer_rob2_to_tabel():
     pick_object_on_conveyer_rob2()
     place_object_on_tabl_rob2()
+    #add in one place_objct_on_table_rob2 code whit increasing y values like the sorting on table 1
+    #place_object_ontble2_incresed_yvalue()  # testing this one
 
 
 def move_detected_object_to_conveyor_rob2():
@@ -453,12 +514,18 @@ def move_object_form_conveyor_rob1_to_table():
 
 
 # sorting cylinders form tabel 1 to conveyer
-while objectCount < 8:
+while objectCount < 4:
     #locate_objects_rob2()
     locate_objects_rob()
+    #-0.26 - x2i, -0.46 + y2i, 0.06, 0, 3.14, 0
     if (x != lastx or y != lasty) and (x != 0.025 or y != -0.385):
-        pick_object_from_table_rob1()
-        sort_on_table1()
+    #if (x != lastx or y != lasty) and (x != 0.025 or y != -0.385 and y!=0.38 and x < -0.270 and x>0.1):
+    #if (x != lastx or y != lasty) and (x != 0.025 or y != -0.385 and x > -0.250): # trying this one or x < it should work because it wil than exclude everi vallues inside of it
+        move_detected_object_to_conveyor_rob1()
+        move_object_form_conveyer_rob2_to_tabel()
+        #pick_object_on_conveyer_rob2()
+        #pick_object_from_table_rob1()
+        #sort_on_table1()
         #move_detected_object_to_conveyor_rob1()
         #move_object_form_conveyer_rob2_to_tabel()
         #move_object_form_conveyor_rob1_to_table()
