@@ -1,3 +1,9 @@
+"""
+This is a test file for functions
+every functions her should work individually
+using it as reference to build the
+python scripts needed to compleat some part of the task
+"""
 import urx
 from threading import Thread
 from Gripper import *
