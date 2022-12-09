@@ -1,3 +1,6 @@
+"""
+every code should be called form her to preform the whole task
+"""
 # pic and places on both robot simultaneously
 import urx
 import time
@@ -6,6 +9,8 @@ import sys
 from Gripper import *
 from blocsortingRob1 import sorting_table1
 from blocksortingRob2 import sortig_table2
+from rob1sendSylindertoRob2 import send_cylinders_to_table2
+from rob2sendCubesToRob1 import send_cubes_to_table1
 
 
 #set robot ip adresses
@@ -84,6 +89,8 @@ rob2.set_tcp((0,0,0.16,0,0,0))
 
 Thread(target = moverob).start()
 Thread(target = moverob2).start()
+send_cylinders_to_table2()
+send_cubes_to_table1()
 
 time.sleep(30)
 

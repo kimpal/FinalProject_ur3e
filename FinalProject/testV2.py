@@ -521,15 +521,17 @@ while objectCount < 9:
     if (x != lastx or y != lasty) and (x != 0.025 or y != -0.385):
     #if (x != lastx or y != lasty) and (x != 0.025 or y != -0.385 and y!=0.38 and x < -0.270 and x>0.1):
     #if (x != lastx or y != lasty) and (x != 0.025 or y != -0.385 and x < -0.230): # trying this one or x < it should work because it wil than exclude everi vallues inside of it
-        move_detected_object_to_conveyor_rob1()
-        move_object_form_conveyer_rob2_to_tabel()
-        #pick_object_on_conveyer_rob2
-        #pick_object_from_table_rob1()
-        #sort_on_table1()
-
         #move_detected_object_to_conveyor_rob1()
         #move_object_form_conveyer_rob2_to_tabel()
-        #move_object_form_conveyor_rob1_to_table()
+
+        #pick_object_on_conveyer_rob2
+        #sort_on_table1()
+
+        move_detected_object_to_conveyor_rob1()  # use to runn the rob1 send to rob 2 code file
+        move_object_form_conveyer_rob2_to_tabel()  # use to runn the tob 1 send to rob 2 code file
+
+        #move_detected_object_to_conveyor_rob2() #use to runn the rob 2 send to rob 1 code file
+        #move_object_form_conveyor_rob1_to_table() #use to runn the rob 2 sedn to rob 1 code fiel
 #rob.close()
 #rob2.close()
 program_complete()

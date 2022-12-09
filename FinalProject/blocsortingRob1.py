@@ -1,3 +1,7 @@
+"""
+This is the picking cubes on table 1
+and places them on the home area at table 1
+"""
 import urx
 from threading import Thread
 from Gripper import *
@@ -106,22 +110,17 @@ def pick_object_from_table_rob1():
 # Local sorting on table 1
 # to doo Test this function if working refactoring it, and implement for rob 2
 def sort_on_table1():
-    global x2, y2, x2i, y2i, lastx, lasty, objectCount, placeObject, pickVia, placeConveyorA
-    #objectCount += 1
-    #x2 = 0
-    #y2 = 0
-    if(objectCount<6):
+    global x2, y2, x2i, y2i, objectCount, placeObject, pickVia, placeConveyorA
+    if(objectCount<6): # 6
         print("objectount1.", objectCount)
         if(objectCount>1):
             x2 = x2 + float(0.0)
             y2 = y2 + float(0.09)
         else:
             pass
-        #lastx = x
-        #lasty = y
         overPickPos = 0.02, -0.400, 0.08, 0.0, 3.14, 0.0
-        OvrPosplaceObject = -0.26-x2, -0.46+y2, 0.05, 0, 3.14, 0
-        placeObject = -0.26-x2, -0.46+y2, 0.03, 0, 3.14, 0
+        OvrPosplaceObject = -0.30-x2, -0.42+y2, 0.09, 0, 3.14, 0
+        placeObject = -0.30-x2, -0.42+y2, 0.025, 0, 3.14, 0
         #move(rob, overPickPos, True)
         move(rob, OvrPosplaceObject, True)
         move(rob, placeObject, True)
@@ -131,19 +130,15 @@ def sort_on_table1():
         move(rob, clearCamera, True)
         #move(rob, overPickPos, True)
     else:
-        #x2 = -0.26
-        #y2 = -0.46
         if(objectCount>=6):
             x2i = x2i + float(0.0)  # Ned to give this variable a new indeviduale name in order to get it to work
             y2i = y2i + float(0.09)  # Same as x2 give its oven independent name form the  if above example x2i and y2i
             print("in second if else condition")
         else:
             pass
-        #lastx = x
-        #lasty = y
         overPickPos = 0.02, -0.400, 0.1, 0.0, 3.14, 0.0
-        OverPosplaceObject = -0.26-x2i, -0.46+y2i, 0.09, 0, 3.14, 0
-        placeObject = -0.28-x2i, -0.46+y2i, 0.06, 0, 3.14, 0
+        OverPosplaceObject = -0.30-x2i, -0.42+y2i, 0.2, 0, 3.14, 0
+        placeObject = -0.30-x2i, -0.42+y2i, 0.07, 0, 3.14, 0
         #move(rob, overPickPos, True)
         move(rob, OverPosplaceObject, True)
         move(rob, placeObject, True)
@@ -192,7 +187,7 @@ move(rob, clearCamera, True)
 
 
 def sorting_table1():
-    while objectCount < 6:
+    while objectCount < 3:#6
         #locate_objects_rob2()
         locate_objects_rob()
         #-0.26 - x2i, -0.46 + y2i, 0.06, 0, 3.14, 0
@@ -200,4 +195,7 @@ def sorting_table1():
             pick_object_from_table_rob1()
             sort_on_table1()
 
-sorting_table1()
+
+print("rob1 finish sorting")
+
+#sorting_table1()
