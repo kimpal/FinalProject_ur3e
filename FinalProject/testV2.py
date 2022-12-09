@@ -47,7 +47,7 @@ y3i = 0
 clearCamera = 0.25, -0.22, 0.20, 0, 3.14, 0
 # placeObject = 0.3, -0.25, 0.15, 0, 3.14, 0
 placeObject = 0.3, -0.25, 0.03, 0, 3.14, 0  # coordinate to please the block carefully table 1
-placeConveyorA = 0.2, 0.3, 0.005, 2.24, 2.2, 0
+placeConveyorA = 0.2, 0.3, 0.0013, 2.24, 2.2, 0
 overpickPlaceConveyorA = 0.2, 0.3, 0.1, 2.24, 2.2, 0
 pickConveyorA = 0, 0.3, 0.15, 0, 3.14, 0
 pickVia = 0.3, -0.25, 0.15, 0, 3.14, 0
@@ -118,7 +118,7 @@ def pick_object_from_table_rob1():
     lasty = y
     overPickPos = x, y, 0.1, 0.0, 3.14, 0.0
     #overPickPos = 0.02, -0.400, 0.1, 0.0, 3.14, 0.0
-    picObject = x, y, 0.006, 0, 3.14, 0
+    picObject = x, y, 0.018, 0, 3.14, 0
     # pickPos = x, y, 0.005, 0.0, 3.14, 0.0
     rob.send_program(rq_open())
     time.sleep(0.1)
@@ -256,7 +256,7 @@ def place_object_ontble2_incresed_yvalue():
             pass
         #lastx = x
         #lasty = y
-        placeObjectTabel2 = 0.3+x3, -0.400+y3, 0.03, 0, 3.14, 0
+        placeObjectTabel2 = 0.3+x3, -0.400+y3, 0.023, 0, 3.14, 0
         overPlaceObjectTabel2 = 0.3+x3, -0.400+y3, 0.1, 0, 3.14, 0
         #move(rob, overPickPos, True)
         move(rob2, overPlaceObjectTabel2, True)
@@ -269,7 +269,7 @@ def place_object_ontble2_incresed_yvalue():
     else:
         #x2 = -0.26
         #y2 = -0.46
-        if(objectCount>=6):
+        if(objectCount>=5):
             x3i = x3i + float(0.0)
             y3i = y3i + float(0.09)
             print("in second if else condition")
@@ -277,8 +277,8 @@ def place_object_ontble2_incresed_yvalue():
             pass
         #lastx = x
         #lasty = y
-        placeObjectTabel2 = 0.3+x3i, -0.400+y3i, 0.03, 0, 3.14, 0
-        overPlaceObjectTabel2 = 0.3+x3i, -0.400+y3i, 0.1, 0, 3.14, 0
+        placeObjectTabel2 = 0.3+x3i, -0.400+y3i, 0.1, 0, 3.14, 0
+        overPlaceObjectTabel2 = 0.3+x3i, -0.400+y3i, 0.2, 0, 3.14, 0
         #move(rob, overPickPos, True)
         move(rob2, overPlaceObjectTabel2, True)
         move(rob2, placeObjectTabel2, True)
@@ -468,9 +468,9 @@ def move_detected_object_to_conveyor_rob1():
 
 def move_object_form_conveyer_rob2_to_tabel():
     pick_object_on_conveyer_rob2()
-    place_object_on_tabl_rob2()
+    #place_object_on_tabl_rob2()
     #add in one place_objct_on_table_rob2 code whit increasing y values like the sorting on table 1
-    #place_object_ontble2_incresed_yvalue()  # testing this one
+    place_object_ontble2_incresed_yvalue()  # testing this one
 
 
 def move_detected_object_to_conveyor_rob2():
@@ -514,18 +514,19 @@ def move_object_form_conveyor_rob1_to_table():
 
 
 # sorting cylinders form tabel 1 to conveyer
-while objectCount < 4:
+while objectCount < 9:
     #locate_objects_rob2()
     locate_objects_rob()
     #-0.26 - x2i, -0.46 + y2i, 0.06, 0, 3.14, 0
     if (x != lastx or y != lasty) and (x != 0.025 or y != -0.385):
     #if (x != lastx or y != lasty) and (x != 0.025 or y != -0.385 and y!=0.38 and x < -0.270 and x>0.1):
-    #if (x != lastx or y != lasty) and (x != 0.025 or y != -0.385 and x > -0.250): # trying this one or x < it should work because it wil than exclude everi vallues inside of it
+    #if (x != lastx or y != lasty) and (x != 0.025 or y != -0.385 and x < -0.230): # trying this one or x < it should work because it wil than exclude everi vallues inside of it
         move_detected_object_to_conveyor_rob1()
         move_object_form_conveyer_rob2_to_tabel()
-        #pick_object_on_conveyer_rob2()
+        #pick_object_on_conveyer_rob2
         #pick_object_from_table_rob1()
         #sort_on_table1()
+
         #move_detected_object_to_conveyor_rob1()
         #move_object_form_conveyer_rob2_to_tabel()
         #move_object_form_conveyor_rob1_to_table()
