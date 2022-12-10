@@ -88,6 +88,7 @@ time.sleep(0.1)
 rob.set_tcp((0,0,0.16,0,0,0))
 rob2.set_tcp((0,0,0.16,0,0,0))
 
+#this is the secvense the coe is executed in
 Thread(target = moverob).start()
 Thread(target = moverob2).start()
 print("heisan hoppsan(starting the sorting)")
