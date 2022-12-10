@@ -252,7 +252,7 @@ def move_detected_object_to_conveyor_rob1():
     pick_object_from_table_rob1()
     place_object_on_conveyer_rob1()
     start_conveyor()
-    time.sleep(3.1)  # this tim is perfect with the speed to get the object in good position for pic form rob2 not perfect in multitreding
+    time.sleep(3.2)  # this tim is perfect with the speed to get the object in good position for pic form rob2 not perfect in multitreding
     stop_conveyor()
 
 

@@ -237,7 +237,7 @@ def move_detected_object_to_conveyor_rob2():
     pick_object_from_table_rob2()
     place_object_on_conveyer_rob2()
     reverse_conveyor()
-    time.sleep(3.0) # tested and perfect sleep time before conveyor stops
+    time.sleep(3.3) # tested and perfect sleep time before conveyor stops
     stop_conveyor()
 
 
