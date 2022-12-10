@@ -161,29 +161,19 @@ def program_complete():
 
 
 # activates gripper. only needed once per power cycle
-rob.send_program(rq_activate())
-time.sleep(2.5)
-rob2.send_program(rq_activate())
-time.sleep(2.5)
+#rob2.send_program(rq_activate())
+#time.sleep(2.5)
 # sets speed of gripper to max
-rob.send_program(rq_set_speed(250))
-time.sleep(0.1)
+#rob2.send_program(rq_set_speed(250))
+#time.sleep(0.1)
 # sets force of gripper to a low value
-rob.send_program(rq_set_force(10))
-time.sleep(0.1)
-# sets speed of gripper to max
-rob2.send_program(rq_set_speed(250))
-time.sleep(0.1)
-# sets force of gripper to a low value
-rob2.send_program(rq_set_force(10))
-time.sleep(0.1)
+#rob2.send_program(rq_set_force(10))
+#time.sleep(0.1)
 # sets robot tcp, the distance from robot flange to gripper tips.
-rob.set_tcp((0, 0, 0.16, 0, 0, 0))
-rob2.set_tcp((0, 0, 0.16, 0, 0, 0))
+#rob2.set_tcp((0, 0, 0.16, 0, 0, 0))
 
 # clear the robots away form the camera at the first
 move(rob2, clearCamera, True)
-move(rob, clearCamera, True)
 
 
 # sorting cylinders form tabel 2 to conveyer

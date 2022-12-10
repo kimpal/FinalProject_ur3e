@@ -51,6 +51,7 @@ def move(robot, location, moveWait):
 
 
 def program_complete():
+    #global stop_threads
     stop_threads = True
     rob.close()
     rob2.close()
@@ -89,9 +90,14 @@ rob2.set_tcp((0,0,0.16,0,0,0))
 
 Thread(target = moverob).start()
 Thread(target = moverob2).start()
+print("heisan hoppsan(starting the sorting)")
+#send_cylinders_to_table2()
+#send_cubes_to_table1()
+
+time.sleep(96) # try whit 96
+print("start sending objects")
 send_cylinders_to_table2()
-send_cubes_to_table1()
-
 time.sleep(30)
-
+send_cubes_to_table1()
+time.sleep(30)
 program_complete()

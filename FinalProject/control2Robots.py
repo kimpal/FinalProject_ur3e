@@ -77,6 +77,7 @@ def handOverrob2():
 
 
 def programComplete():
+    global stop_threads
     stop_threads = True
     rob.close()
     rob2.close()

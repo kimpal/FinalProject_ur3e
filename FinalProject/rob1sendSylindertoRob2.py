@@ -252,7 +252,7 @@ def move_detected_object_to_conveyor_rob1():
     pick_object_from_table_rob1()
     place_object_on_conveyer_rob1()
     start_conveyor()
-    time.sleep(3.6)  # this tim is perfect with the speed to get the object in good position for pic form rob2
+    time.sleep(3.1)  # this tim is perfect with the speed to get the object in good position for pic form rob2 not perfect in multitreding
     stop_conveyor()
 
 
@@ -264,11 +264,13 @@ def move_object_form_conveyer_rob2_to_tabel():
 
 # sending cylinders form table 1 to table2 home area
 def send_cylinders_to_table2():
-    while objectCount < 9:
+    while objectCount < 3:
         locate_objects_rob()
         if (x != lastx or y != lasty) and (x != 0.025 or y != -0.385):
             move_detected_object_to_conveyor_rob1()  # use to runn the rob1 send to rob 2 code file
             move_object_form_conveyer_rob2_to_tabel()  # use to runn the tob 1 send to rob 2 code file
 
-program_complete()
+
+#send_cylinders_to_table2()
+#program_complete()
 print("completing sending cylinders to tale 2 ")

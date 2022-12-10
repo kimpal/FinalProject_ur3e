@@ -56,7 +56,7 @@ placeVia = 0.3, -0.25, 0.15, 0, 3.14, 0
 #picObject = 0.02, -0.400, 0.006, 0, 3.14, 0
 placeObjectTabel2 = 0.3, -0.400, 0.03, 0, 3.14, 0
 overPlaceObjectTabel2 = 0.3, -0.400, 0.1, 0, 3.14, 0
-rob2PickConveyorA = -0.38, 0.3, 0.001, 2.24, 2.2, 0
+rob2PickConveyorA = -0.38, 0.3, 0.0001, 2.24, 2.2, 0
 rob2OverpicConveyorA = -0.38, 0.3, 0.1, 2.24, 2.2, 0
 rob2OverPickPosTable = 0.02, -0.400, 0.1, 0.0, 3.14, 0.0
 
@@ -141,7 +141,7 @@ def pick_object_from_table_rob2():
     # sleep to allow gripper to close fully before program resumes
     time.sleep(0.6)
     move(rob2, overPickPos, True)
-    move(rob2, clearCamera, True)
+    #move(rob2, clearCamera, True)
 
 
 # kep this
@@ -229,7 +229,6 @@ rob2.set_tcp((0, 0, 0.16, 0, 0, 0))
 
 # clear the robots away form the camera at the first
 move(rob2, clearCamera, True)
-move(rob, clearCamera, True)
 #Setting the speed for the conveyer belt
 set_conveyor_speed(0.400)
 
@@ -238,7 +237,7 @@ def move_detected_object_to_conveyor_rob2():
     pick_object_from_table_rob2()
     place_object_on_conveyer_rob2()
     reverse_conveyor()
-    time.sleep(3.6)
+    time.sleep(3.0) # tested and perfect sleep time before conveyor stops
     stop_conveyor()
 
 
@@ -249,11 +248,13 @@ def move_object_form_conveyor_rob1_to_table():
 
 # pickong cubes form tabel 2 and sends it to tabl1 home area
 def send_cubes_to_table1():
-    while objectCount < 6:
+    while objectCount < 3:
         locate_objects_rob2()
         if (x != lastx or y != lasty) and (x != 0.025 or y != -0.385):
             move_detected_object_to_conveyor_rob2() #use to runn the rob 2 send to rob 1 code file
             move_object_form_conveyor_rob1_to_table() #use to runn the rob 2 sedn to rob 1 code fiel
 
-program_complete()
+
+#send_cubes_to_table1()
+#program_complete()
 print("completed sending object to table 2")
